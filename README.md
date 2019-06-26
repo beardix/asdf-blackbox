@@ -1,5 +1,7 @@
 # asdf-blackbox
 
+[![Build Status](https://dev.azure.com/beardix/asdf/_apis/build/status/beardix.asdf-blackbox?branchName=master)](https://dev.azure.com/beardix/asdf/_build/latest?definitionId=15&branchName=master)
+
 [BlackBox](https://github.com/StackExchange/blackbox) plugin for the [asdf](https://github.com/asdf-vm/asdf) version manager.
 
 ## Install
