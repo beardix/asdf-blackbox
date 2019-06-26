@@ -33,7 +33,7 @@ install() {
     tar -xzf "$download_path" -C "$extracted_path" --strip-components 1
     rm -f "${extracted_path}/bin/Makefile"
     mkdir -p "$install_path_bin"
-    cp "${extracted_path}"/bin/* "$install_path_bin"
+    mv "${extracted_path}"/bin/* "$install_path_bin"
   else
     error_exit "Error: version ${install_version} not found"
   fi
