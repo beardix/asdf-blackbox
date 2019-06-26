@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly DOWNLOAD_BASE_URL="https://github.com/StackExchange/blackbox/archive"
+
+readonly TMP_DOWNLOAD_DIR="$(mktemp -d)"
+trap 'rm -rf "${TMP_DOWNLOAD_DIR?}"' EXIT
+
+#
+function error_exit {
+  echo "$1" >&2
+  exit "${2:-1}"
+}
+
+function install {
+  local -r install_type="$1"
+  local -r install_version="$2"
+  local -r install_path="$3"
+  local -r install_path_bin="${install_path}/bin"
+  local -r download_url="${DOWNLOAD_BASE_URL}/v${install_version}.tar.gz"
+  local -r download_path="${TMP_DOWNLOAD_DIR}/blackbox.tar.gz"
+  local -r extracted_path="${TMP_DOWNLOAD_DIR}/extracted"
+
+  [ "$install_type" != "version" ] && error_exit "Error: source installs are not supported"
+
+  echo "Downloading from ${download_url}"
+  if curl -fL -o "$download_path" "$download_url"; then
+    echo "Installing"
+    mkdir "$extracted_path"
+    tar -xzf "$download_path" -C "$extracted_path" --strip-components 1
+    rm -f "${extracted_path}/bin/Makefile"
+    mkdir -p "$install_path_bin"
+    cp "${extracted_path}"/bin/* "$install_path_bin"
+  else
+    error_exit "Error: version ${install_version} not found"
+  fi
+}
+
+#
+install "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
