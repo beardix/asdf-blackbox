@@ -1,9 +1,0 @@
-# TODO: work out a suitable test command
-steps:
-- bash: |
-    git clone https://github.com/asdf-vm/asdf.git
-    . asdf/asdf.sh
-    asdf plugin-test blackbox .
-  displayName: asdf plugin-test
-  env:
-    GITHUB_API_TOKEN: $(GitHub.APIToken)
